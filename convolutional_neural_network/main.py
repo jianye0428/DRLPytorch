@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
-
+import os
 
 # Device configuration
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -13,13 +13,19 @@ num_classes = 10
 batch_size = 100
 learning_rate = 0.001
 
-# MNIST dataset
-train_dataset = torchvision.datasets.MNIST(root='../../data/',
-                                           train=True, 
-                                           transform=transforms.ToTensor(),
-                                           download=True)
+if not(os.path.exists('./data/')) or not os.listdir('./data/'):
+    # not data dir or data is empty dir
+    DOWNLOAD = True
+else:
+    DOWNLOAD = False
 
-test_dataset = torchvision.datasets.MNIST(root='../../data/',
+# MNIST dataset 
+train_dataset = torchvision.datasets.MNIST(root='./data', 
+                                           train=True, 
+                                           transform=transforms.ToTensor(),  
+                                           download=DOWNLOAD)
+
+test_dataset = torchvision.datasets.MNIST(root='./data/',
                                           train=False, 
                                           transform=transforms.ToTensor())
 
